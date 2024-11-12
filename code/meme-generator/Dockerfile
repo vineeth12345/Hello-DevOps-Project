@@ -3,7 +3,7 @@ COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 CMD ["python", "main.py"]
 
-FROM container.babelstreet.com/synopsys-detect as scanner
+FROM container.babelstreet.com/synopsys-detect:3.1 as scanner
 ARG BUILD_ENVIRONMENT="local"
 ARG BRANCH_NAME
 ARG FAIL_ON_SEVERITY_LEVEL
