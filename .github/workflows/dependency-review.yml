@@ -34,9 +34,7 @@ jobs:
         uses: actions/dependency-review-action@v4
         # Commonly enabled options, see https://github.com/actions/dependency-review-action#configuration-options for all available options.
         with:
-          #   config-file: "github/workflows/dependency-review-config.yml@main"
-          fail-on-severity: high
-          base-ref: ${{ github.event.pull_request.base.sha }}
-          head-ref: ${{ github.event.pull_request.head.sha }}
+          config-file: "vineeth12345/workflows/dependency-review-config.yml@main"
+          # fail-on-severity: high
         #   deny-licenses: GPL-1.0-or-later, LGPL-2.0-or-later
         #   retry-on-snapshot-warnings: true
