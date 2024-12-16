@@ -10,7 +10,7 @@ on:
   workflow_dispatch: # Allow manual runs
     inputs:
       branch:
-        description: "Branch to trigger deployment in searchdl"
+        description: "Branch to trigger in searchdl"
         required: true
         default: "main"
 
