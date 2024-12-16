@@ -1,0 +1,53 @@
+name: Deploy Search-Application and Trigger SearchDL
+
+on:
+  workflow_run:
+    branches:
+      - master
+    workflows: ["Container Build and Push"]
+    types:
+      - completed
+  workflow_dispatch: # Allow manual runs
+    inputs:
+      branch:
+        description: "Branch to trigger deployment in searchdl"
+        required: true
+        default: "main"
+
+jobs:
+  deploy-to-dev:
+    name: Deploy Search-Application to DEV
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    uses: example/workflows/.github/workflows/pbk-nextjs-container.yml@main
+    secrets: inherit
+    concurrency: inttest01 # Match environment-name below for deployments
+    with:
+      environment-name: inttest01
+      operation: deploy
+      environment-type: DEV
+
+  trigger-searchdl:
+    name: Trigger Deployment for SearchDL
+    needs: deploy-to-dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger SearchDL Deployment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const branch = core.getInput('branch');
+            const response = await github.repos.createWorkflowDispatch({
+              owner: 'your-org-or-username',
+              repo: 'searchdl',
+              workflow_id: 'deploy.yml', // Workflow file in the searchdl repo
+              ref: branch,
+              inputs: {
+                concurrency: "inttest01", // Match environment-name below for deployments
+                environment_name: "inttest01",
+                operation: "deploy",
+                environment_type: "DEV"
+              }
+            });
+            console.log('Triggered workflow in searchdl:', response.status);
+        env:
+          GITHUB_TOKEN: ${{ secrets.SEARCHDL_PAT }}
