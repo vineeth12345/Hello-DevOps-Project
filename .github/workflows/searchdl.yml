@@ -1,0 +1,43 @@
+name: Deploy to DEV
+
+on:
+  workflow_run:
+    branches:
+      - master
+    workflows: ["Container Build and Push"]
+    types:
+      - completed
+  workflow_dispatch: # Allow manual runs with inputs
+    inputs:
+      concurrency:
+        description: "Concurrency for the deployment"
+        required: true
+        type: string
+        default: "inttest01"
+      environment-name:
+        description: "The name of the environment to deploy"
+        required: true
+        type: string
+        default: "inttest01"
+      operation:
+        description: "The operation to perform (e.g., deploy)"
+        required: true
+        type: string
+        default: "deploy"
+      environment-type:
+        description: "The type of environment (e.g., DEV, PROD)"
+        required: true
+        type: string
+        default: "DEV"
+
+jobs:
+  deploy-to-dev:
+    name: Deploy to DEV
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    uses: example/workflows/.github/workflows/pbk-container.yml@main
+    secrets: inherit
+    concurrency: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.concurrency || 'inttest01' }}
+    with:
+      environment-name: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment-name || 'inttest01' }}
+      operation: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.operation || 'deploy' }}
+      environment-type: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment-type || 'DEV' }}
