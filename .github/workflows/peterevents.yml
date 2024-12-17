@@ -21,6 +21,7 @@ jobs:
           client-payload: >
             {
               "branch_name": "${{ github.event.inputs.branch_name }}",
+              "workflow_file": "deploy.yml",
               "environment_name": "Development-inttest01",
               "operation": "deploy",
               "environment_type": "DEV",
