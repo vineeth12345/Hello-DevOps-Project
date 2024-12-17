@@ -1,0 +1,28 @@
+name: Trigger Remote Repo Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: "Branch to trigger in remote repository"
+        required: true
+        default: "main"
+
+jobs:
+  trigger-remote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger remote repository workflow
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          repository: your-org-or-username/searchdl
+          event-type: trigger-searchdl-deploy
+          client-payload: >
+            {
+              "branch_name": "${{ github.event.inputs.branch_name }}",
+              "environment_name": "Development-inttest01",
+              "operation": "deploy",
+              "environment_type": "DEV",
+              "instance_name": "inttest01"
+            }
