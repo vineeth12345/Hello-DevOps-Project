@@ -16,7 +16,7 @@ jobs:
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          repository: your-org-or-username/searchdl
+          repository: vineeth12345/docker_catcg_poc
           event-type: trigger-searchdl-deploy
           client-payload: >
             {
