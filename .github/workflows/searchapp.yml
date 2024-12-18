@@ -27,31 +27,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger SearchDL Deployment
-        uses: actions/github-script@v6
+        uses: peter-evans/workflow-dispatch@v3
         with:
-          script: |
-            const branch = core.getInput('branch');
-
-            const response = await github.rest.actions.createWorkflowDispatch({
-              owner: 'vineeth12345',
-              repo: 'docker_catcg_poc',
-              workflow_id: 'deploy1.yml',
-              ref: branch,
-              inputs: {
-                environment_name: "Development-inttest01",
-                operation: "deploy",
-                environment_type: "DEV",
-                "instance-name": "inttest01"
-              },
-              headers: {
-                'X-GitHub-Api-Version': '2022-11-28'
-              }
-            });
-
-            if (response.status === 204) {
-              console.log('Triggered workflow in searchdl successfully');
-            } else {
-              console.error('Failed to trigger workflow:', response);
-            }
-        env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          repository: vineeth12345/searchdl # Replace with the actual username/repo name
+          workflow: deploy1.yml # Workflow file name in Repo B (make sure this file exists in the root or use the full path)
+          ref: refs/heads/${{ github.event.inputs.branch }} # Use the input branch here
+          inputs:
+            environment_name: "Development-inttest01"
+            operation: "deploy"
+            environment_type: "DEV"
+            instance-name: "inttest01"
