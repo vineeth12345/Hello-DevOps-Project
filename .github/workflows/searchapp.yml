@@ -12,7 +12,7 @@ jobs:
   deploy-to-dev:
     name: Deploy Search-Application to DEV
     if: ${{ github.event_name == 'workflow_dispatch' }}
-    uses: vineeth12345/workflows/.github/workflows/search-app.yml@main
+    uses: vineeth12345/workflows/.github/workflows/search-app.yml@main # This line needs to be corrected
     secrets: inherit
     concurrency: Development-inttest01 # Match environment-name below for deployments
     with:
@@ -30,7 +30,7 @@ jobs:
         uses: peter-evans/workflow-dispatch@v3
         with:
           repository: vineeth12345/searchdl # Replace with the actual username/repo name
-          workflow: deploy1.yml # Workflow file name in Repo B (make sure this file exists in the root or use the full path)
+          workflow: deploy1.yml # Workflow file name in Repo B
           ref: refs/heads/${{ github.event.inputs.branch }} # Use the input branch here
           inputs:
             environment_name: "Development-inttest01"
