@@ -36,7 +36,6 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const core = require('@actions/core');  // Import core for handling inputs
             const branch = core.getInput('branch');
             const response = await github.rest.repos.createWorkflowDispatch({
               owner: 'vineeth12345',
