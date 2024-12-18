@@ -45,7 +45,7 @@ jobs:
               inputs: {
                 environment_name: "Development-inttest01",
                 operation: "deploy",
-                environment_type: "DEV"
+                environment_type: "DEV",
                 instance-name: "inttest01"
               }
             });
