@@ -46,7 +46,7 @@ jobs:
                 environment_name: "Development-inttest01",
                 operation: "deploy",
                 environment_type: "DEV",
-                instance-name: "inttest01"
+                "instance-name": "inttest01"
               }
             });
             console.log('Triggered workflow in searchdl:', response.status);
