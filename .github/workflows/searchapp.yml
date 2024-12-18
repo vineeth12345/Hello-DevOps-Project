@@ -30,13 +30,8 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const { Octokit } = require("@octokit/core");
-            const octokit = new Octokit({
-              auth: process.env.PERSONAL_ACCESS_TOKEN
-            });
-
             const branch = core.getInput('branch');
-            const response = await octokit.request('POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches', {
+            const response = await github.rest.actions.createWorkflowDispatch({
               owner: 'vineeth12345',
               repo: 'docker_catcg_poc',
               workflow_id: 'deploy1.yml', // Workflow file in the docker_catcg_poc repo
@@ -46,12 +41,13 @@ jobs:
                 operation: "deploy",
                 environment_type: "DEV",
                 "instance-name": "inttest01"
-              },
-              headers: {
-                'X-GitHub-Api-Version': '2022-11-28'
               }
             });
 
-            console.log('Triggered workflow in searchdl:', response.status);
+            if (response.status === 204) {
+              console.log('Triggered workflow in searchdl successfully');
+            } else {
+              console.error('Failed to trigger workflow:', response);
+            }
         env:
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
