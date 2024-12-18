@@ -18,7 +18,7 @@ jobs:
   deploy-to-dev:
     name: Deploy Search-Application to DEV
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
-    uses: vineeth12345/workflows/.github/search-app.yml@main
+    uses: vineeth12345/workflows/.github/workflows/search-app.yml@main
     secrets: inherit
     concurrency: Development-inttest01 # Match environment-name below for deployments
     with:
