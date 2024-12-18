@@ -37,7 +37,7 @@ jobs:
         with:
           script: |
             const branch = core.getInput('branch');
-            const response = await github.rest.repos.createWorkflowDispatch({
+            const response = await github.actions.createWorkflowDispatch({
               owner: 'vineeth12345',
               repo: 'docker_catcg_poc',
               workflow_id: 'deploy1.yml', // Workflow file in the docker_catcg_poc repo
