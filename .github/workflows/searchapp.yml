@@ -30,14 +30,9 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const { Octokit } = require("@octokit/core");
-            const octokit = new Octokit({
-              auth: process.env.GITHUB_TOKEN
-            });
-
             const branch = core.getInput('branch');
 
-            await octokit.request('POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches', {
+            const response = await github.rest.actions.createWorkflowDispatch({
               owner: 'vineeth12345',
               repo: 'docker_catcg_poc',
               workflow_id: 'deploy1.yml',
@@ -53,6 +48,10 @@ jobs:
               }
             });
 
-            console.log('Workflow dispatch triggered successfully');
+            if (response.status === 204) {
+              console.log('Triggered workflow in searchdl successfully');
+            } else {
+              console.error('Failed to trigger workflow:', response);
+            }
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
