@@ -1,4 +1,4 @@
-name: Deploy Search-Application and Trigger SearchDL
+name: Deploy Search-Application+searchdl
 
 on:
   # workflow_run:
