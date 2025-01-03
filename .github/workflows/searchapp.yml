@@ -37,9 +37,5 @@ jobs:
             -d '{
               "ref": "refs/heads/${{ github.event.inputs.branch }}",
               "inputs": {
-                "environment-name": "Development-inttest01",
-                "operation": "deploy",
-                "environment-type": "DEV",
-                "instance-name": "inttest01"
               }
             }'
