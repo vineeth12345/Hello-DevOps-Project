@@ -28,14 +28,33 @@ jobs:
     steps:
       - name: Trigger SearchDL Deployment via GitHub API (curl)
         run: |
-          curl -L \
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -L \
             -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/vineeth12345/docker_catcg_poc/actions/workflows/deploy1.yml/dispatches \
             -d '{
               "ref": "refs/heads/${{ github.event.inputs.branch }}",
               "inputs": {
               }
-            }'
+            }')
+
+          if [[ "$RESPONSE" -eq 204 ]]; then
+            echo "Success: Triggered SearchDL deployment successfully." | tee -a $GITHUB_STEP_SUMMARY
+          else
+            echo "Error: Failed to trigger SearchDL deployment. HTTP Response: $RESPONSE" | tee -a $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+        # curl -L \
+        #   -X POST \
+        #   -H "Accept: application/vnd.github+json" \
+        #   -H "Authorization: Bearer ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+        #   -H "X-GitHub-Api-Version: 2022-11-28" \
+        #   https://api.github.com/repos/vineeth12345/docker_catcg_poc/actions/workflows/deploy1.yml/dispatches \
+        #   -d '{
+        #     "ref": "refs/heads/${{ github.event.inputs.branch }}",
+        #     "inputs": {
+        #     }
+        #   }'
