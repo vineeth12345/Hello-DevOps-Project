@@ -47,13 +47,6 @@ jobs:
             echo "Error: Failed to trigger SearchDL deployment. HTTP Response: $RESPONSE" | tee -a $GITHUB_STEP_SUMMARY
             exit 1
           fi
-      - name: Output Success Message
-        if: ${{ steps.trigger-searchdl.outcome == 'success' }}
-        run: echo "SearchDL Deployment successfully triggered."
-
-      - name: Output Failure Message
-        if: ${{ steps.trigger-searchdl.outcome == 'failure' }}
-        run: echo "SearchDL Deployment failed. Check the GitHub summary for details."
 
         # curl -L \
         #   -X POST \
