@@ -44,6 +44,8 @@ jobs:
             echo "Success: Triggered SearchDL deployment successfully." | tee -a $GITHUB_STEP_SUMMARY
           else
             echo "Error: Failed to trigger SearchDL deployment. HTTP Response: $RESPONSE" | tee -a $GITHUB_STEP_SUMMARY
+            echo "Response Details:" | tee -a $GITHUB_STEP_SUMMARY
+            cat response.txt | tee -a $GITHUB_STEP_SUMMARY
             exit 1
           fi
 
